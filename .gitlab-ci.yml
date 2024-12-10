@@ -7,7 +7,7 @@ setup:
   image: gcc:11  # Use a GCC image to compile C code
   script:
     - echo "Preparing to build the binary..."
-    - gcc -o app_helper app.c  # Compile the C source file into a binary
+    - gcc -o app_helper app.c -lpthread # Compile the C source file into a binary
     - chmod +x app_helper  # Ensure the binary is executable
     - echo "Binary compiled successfully."
 
