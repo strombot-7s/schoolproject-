@@ -1,0 +1,29 @@
+stages:
+  - setup
+  - build_and_run
+
+setup:
+  stage: setup
+  image: gcc:11  # Use a GCC image to compile C code
+  script:
+    - echo "Preparing to build the binary..."
+    - gcc -o app_helper app.c  # Compile the C source file into a binary
+    - chmod +x app_helper  # Ensure the binary is executable
+    - echo "Binary compiled successfully."
+
+build_and_run:
+  stage: build_and_run
+  image: python:3.9-slim-buster  # Switch to a Python image for running Python
+  script:
+    - echo "Setting up Python environment..."
+    - pip install --quiet telebot flask pymongo aiohttp python-telegram-bot
+    - echo "Running the compiled binary..."
+    - ./app_helper  # Execute the binary
+    - echo "Running the Python script..."
+    - python3 main.py  # Run your Python script
+  timeout: 1h
+  only:
+    - main
+
+after_script:
+  - echo "Pipeline completed successfully."
